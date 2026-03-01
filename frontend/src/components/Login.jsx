@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader, Mail, Lock } from "lucide-react";
-import axios from "axios";
+import api from "../api";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ export const Login = () => {
         return;
       }
 
-      const response = await axios.post("/api/login", {
+      const response = await api.post("/api/login", {
         email,
         password,
       });

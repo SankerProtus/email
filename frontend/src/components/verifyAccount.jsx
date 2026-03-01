@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader, Twitch } from "lucide-react";
-import axios from "axios";
+import api from "../api";
 
 export const VerifyAccount = () => {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ export const VerifyAccount = () => {
         setError("Please enter a valid 4-digit verification code.");
         return;
       }
-      await axios.post("/api/verify-email", { code: verificationCode });
+      await api.post("/api/verify-email", { code: verificationCode });
       setMessage("Account verified successfully! Redirecting to login...");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
@@ -71,7 +71,7 @@ export const VerifyAccount = () => {
     const email = event.target.email.value;
 
     try {
-      await axios.post("/api/resend-verification", { email });
+      await api.post("/api/resend-verification", { email });
       setMessage(
         "A new verification code has been sent to your email. Please check your inbox.",
       );
