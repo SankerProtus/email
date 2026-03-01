@@ -22,11 +22,36 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+// CORS Configuration - restrict in production
+const corsOptions = {
+  origin:
+    process.env.NODE_ENV === "production"
+      ? process.env.FRONTEND_URL
+      : ["http://localhost:5173", "http://localhost:3000"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  next();
+});
+
 // In-memory storage (replace with database in production)
+// ⚠️ WARNING: This will reset on server restart. Use MongoDB/PostgreSQL for production.
+if (process.env.NODE_ENV === "production") {
+  console.warn(
+    "⚠️  WARNING: Using in-memory storage in production. Data will be lost on restart!",
+  );
+  console.warn(
+    "⚠️  Please connect a database (MongoDB, PostgreSQL, etc.) for production use.",
+  );
+}
 const users = new Map();
 const verificationCodes = new Map();
 
@@ -46,7 +71,10 @@ const isCodeExpired = (timestamp) => {
 
 // Health check
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", message: `Server is running on port http://localhost:${PORT}` });
+  res.json({
+    status: "ok",
+    message: `Server is running on port http://localhost:${PORT}`,
+  });
 });
 
 // Register endpoint
@@ -135,11 +163,9 @@ app.post("/api/verify-email", async (req, res) => {
     const codeData = verificationCodes.get(userEmail);
     if (isCodeExpired(codeData.timestamp)) {
       verificationCodes.delete(userEmail);
-      return res
-        .status(400)
-        .json({
-          message: "Verification code has expired. Please request a new one.",
-        });
+      return res.status(400).json({
+        message: "Verification code has expired. Please request a new one.",
+      });
     }
 
     // Get user
@@ -210,11 +236,9 @@ app.post("/api/resend-verification", async (req, res) => {
     res.json({ message: "Verification code sent successfully" });
   } catch (error) {
     console.error("Resend verification error:", error);
-    res
-      .status(500)
-      .json({
-        message: "Internal server error while resending verification code",
-      });
+    res.status(500).json({
+      message: "Internal server error while resending verification code",
+    });
   }
 });
 
