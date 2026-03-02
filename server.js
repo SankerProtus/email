@@ -8,7 +8,7 @@ import {
   sendVerificationEmail,
   sendWelcomeEmail,
   verifyEmailConnection,
-} from "./mail/email.service.js";
+} from "./mail/resend-email.service.js";
 
 // Load environment variables
 if (process.env.NODE_ENV !== "production") {
@@ -322,7 +322,9 @@ const startServer = async () => {
       })
       .catch((error) => {
         console.error("⚠️ Email verification failed:", error.message);
-        console.warn("📧 Server will continue but email functionality may be limited.");
+        console.warn(
+          "📧 Server will continue but email functionality may be limited.",
+        );
       });
   } catch (error) {
     console.error("Failed to start server:", error);
