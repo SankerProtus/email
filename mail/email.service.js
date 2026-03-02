@@ -27,8 +27,7 @@ export const sendVerificationEmail = async (
     );
 
     const mailOptions = {
-      from:
-        process.env.EMAIL_FROM,
+      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
       to: email,
       subject: emailTemplate.subject,
       html: emailTemplate.html,
@@ -40,6 +39,16 @@ export const sendVerificationEmail = async (
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error("Error sending verification email:", error);
+    
+    // In development or when email fails, log the code
+    if (process.env.NODE_ENV !== "production" || process.env.EMAIL_FALLBACK_MODE === "true") {
+      console.warn("📧 EMAIL FALLBACK MODE:");
+      console.warn(`   Email: ${email}`);
+      console.warn(`   Verification Code: ${verificationCode}`);
+      console.warn(`   Username: ${username}`);
+      return { success: true, fallback: true };
+    }
+    
     throw new Error("Failed to send verification email");
   }
 };
@@ -54,8 +63,7 @@ export const sendWelcomeEmail = async (email, username) => {
     const emailTemplate = getWelcomeEmailTemplate(username);
 
     const mailOptions = {
-      from:
-        process.env.EMAIL_FROM,
+      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
       to: email,
       subject: emailTemplate.subject,
       html: emailTemplate.html,
@@ -67,7 +75,15 @@ export const sendWelcomeEmail = async (email, username) => {
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error("Error sending welcome email:", error);
-    throw new Error("Failed to send welcome email");
+    
+    // In development or fallback mode, just log
+    if (process.env.NODE_ENV !== "production" || process.env.EMAIL_FALLBACK_MODE === "true") {
+      console.warn("📧 Welcome email skipped (fallback mode)");
+      return { success: true, fallback: true };
+    }
+    
+    // Don't throw error for welcome emails - they're not critical
+    return { success: false, error: error.message };
   }
 };
 

@@ -304,20 +304,26 @@ app.use((err, req, res, next) => {
 // Start server
 const startServer = async () => {
   try {
-    // Verify email connection
-    const emailReady = await verifyEmailConnection();
-    if (!emailReady) {
-      console.warn(
-        "⚠️ Email service is not ready. Email functionality may not work.",
-      );
-    }
-
+    // Start server first
     app.listen(PORT, () => {
       console.log(`🚀 Server is running on: http://localhost:${PORT}`);
-      console.log(
-        `📧 Email service status: ${emailReady ? "Ready ✅" : "Not Ready ❌"}`,
-      );
     });
+
+    // Verify email connection in background (non-blocking)
+    verifyEmailConnection()
+      .then((emailReady) => {
+        if (emailReady) {
+          console.log("📧 Email service status: Ready ✅");
+        } else {
+          console.warn(
+            "⚠️ Email service is not ready. Registration will work but emails may not send.",
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("⚠️ Email verification failed:", error.message);
+        console.warn("📧 Server will continue but email functionality may be limited.");
+      });
   } catch (error) {
     console.error("Failed to start server:", error);
     process.exit(1);
