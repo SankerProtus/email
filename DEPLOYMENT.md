@@ -16,10 +16,11 @@
    ```
    NODE_ENV=production
    FRONTEND_URL=https://your-app.vercel.app
-   EMAIL_FROM=PayFlow Analytics <your-email@gmail.com>
-   EMAIL_USER=your-email@gmail.com
-   EMAIL_PASSWORD=your-gmail-app-password
+   RESEND_API_KEY=re_your_resend_api_key
+   RESEND_FROM_EMAIL=onboarding@resend.dev
    ```
+
+   **For email setup**, see [RESEND-SETUP.md](RESEND-SETUP.md) for complete Resend configuration.
 
 4. **Deploy**: Railway will automatically deploy
 
@@ -81,7 +82,7 @@ axios.post(`${import.meta.env.VITE_API_URL}/api/register`, ...)
 - [ ] `.env` file is in `.gitignore` (check: it is ✅)
 - [ ] All secrets use environment variables (check: yes ✅)
 - [ ] CORS is configured for production domain (check: yes ✅)
-- [ ] Gmail App Password is valid
+- [ ] Resend API key is valid (get from https://resend.com/api-keys)
 - [ ] Environment variables set in Railway
 - [ ] Frontend URL updated in Railway env
 - [ ] Backend URL updated in Vercel env

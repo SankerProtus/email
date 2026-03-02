@@ -86,6 +86,7 @@ Your frontend already uses `VITE_API_URL` - no additional variables needed.
 ### Production Testing
 
 After Railway redeploys:
+
 1. Check the logs: `Railway → Your Service → Logs`
 2. Look for: `✅ Resend API key configured`
 3. Register a test user on your live site
@@ -96,22 +97,26 @@ After Railway redeploys:
 ## Troubleshooting
 
 ### "RESEND_API_KEY is not set"
+
 - Make sure you added the API key to Railway variables
 - Check the variable name is exactly `RESEND_API_KEY`
 - Railway should auto-redeploy after adding variables
 
 ### "Invalid RESEND_API_KEY format"
+
 - API key must start with `re_`
 - Make sure you copied the full key with no extra spaces
 - Generate a new API key if needed
 
 ### Emails not arriving
+
 1. Check spam/junk folder
 2. If using custom domain, verify DNS records are set up correctly
 3. Check Railway logs for any error messages
 4. Try using `onboarding@resend.dev` first for testing
 
 ### Rate limits (Free tier)
+
 - 100 emails per day
 - 3,000 emails per month
 - Upgrade to paid plan if you need more
@@ -126,6 +131,7 @@ After Railway redeploys:
 4. **Installed:** `resend` npm package
 
 **Old Gmail SMTP files (can delete):**
+
 - `mail/email.service.js` (old)
 - `mail/transporter.js` (old)
 
@@ -136,6 +142,7 @@ After Railway redeploys:
 Monitor your emails at: [https://resend.com/emails](https://resend.com/emails)
 
 You can see:
+
 - Emails sent
 - Delivery status
 - Open/click tracking (if enabled)
@@ -145,13 +152,13 @@ You can see:
 
 ## Free Tier Limits
 
-| Feature | Free Tier |
-|---------|-----------|
-| Emails per day | 100 |
-| Emails per month | 3,000 |
-| Team members | 1 |
-| Domains | Unlimited |
-| API requests | Unlimited |
+| Feature          | Free Tier |
+| ---------------- | --------- |
+| Emails per day   | 100       |
+| Emails per month | 3,000     |
+| Team members     | 1         |
+| Domains          | Unlimited |
+| API requests     | Unlimited |
 
 **Need more?** Paid plans start at $20/month for 50,000 emails.
 

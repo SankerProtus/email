@@ -113,7 +113,9 @@ export const verifyEmailConnection = async () => {
 
     // Check if API key format is correct
     if (!process.env.RESEND_API_KEY.startsWith("re_")) {
-      console.error("❌ Invalid RESEND_API_KEY format (should start with 're_')");
+      console.error(
+        "❌ Invalid RESEND_API_KEY format (should start with 're_')",
+      );
       return false;
     }
 
