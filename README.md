@@ -1,115 +1,131 @@
 # PayFlow Analytics - Email Verification System
 
-A full-stack email verification system built with React, Express, and Resend. Features user registration with email verification using 4-digit codes.
+A production-ready email verification system with React frontend and Express backend. Users register, receive a 4-digit verification code via email, and verify their account.
 
-## 🚀 Features
+��� **Live Demo:** [https://email-ltct.vercel.app](https://email-ltct.vercel.app)
 
-- User registration with email/password
-- Email verification with 4-digit codes
-- Beautiful HTML email templates
-- Code resend functionality
-- Code expiration (15 minutes)
-- Modern responsive UI with Tailwind CSS
-- Secure authentication with bcrypt
+## ��� Features
 
-## 🛠️ Tech Stack
+- ✅ User registration with email verification
+- ✅ 4-digit verification codes sent via email
+- ✅ Beautiful HTML email templates
+- ✅ Code expiration (15 minutes)
+- ✅ Professional UI with Tailwind CSS
+- ✅ Deployed on Railway (backend) + Vercel (frontend)
 
-**Frontend:** React 19, React Router, Vite, Tailwind CSS, Axios  
-**Backend:** Node.js, Express, Resend (email), bcryptjs  
-**Deployment:** Vercel (frontend) + Railway (backend)
+## ���️ Tech Stack
 
-## 📁 Project Structure
+**Frontend:** React 19.2 • React Router 7 • Tailwind CSS 4 • Vite 7 • Axios  
+**Backend:** Node.js • Express 4 • Resend (email) • bcryptjs  
+**Deployment:** Vercel (frontend) • Railway (backend)
 
-```
+## ��� Project Structure
+
+\`\`\`
 Email/
-├── frontend/           # React app
+├── frontend/           # React frontend (Vercel)
 │   ├── src/
-│   │   ├── components/ # UI components
-│   │   ├── api.js      # API configuration
-│   │   └── App.jsx     # Main app with routing
+│   │   ├── components/
+│   │   │   ├── Register.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── verifyAccount.jsx
+│   │   │   └── Dashboard.jsx
+│   │   ├── api.js      # Axios instance
+│   │   └── App.jsx
 │   └── package.json
 ├── mail/               # Email service
-│   ├── resend-email.service.js  # Resend integration
-│   └── email.templates.js       # Email templates
-├── server.js           # Express backend
+│   ├── resend-email.service.js
+│   └── email.templates.js
+├── server.js           # Express backend (Railway)
 └── package.json
-```
+\`\`\`
 
-## 🚀 Quick Start
+## ��� Local Development
 
-### Local Development
+### Prerequisites
+- Node.js 16+
+- Resend account ([resend.com](https://resend.com)) - Free tier available
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   cd frontend && npm install && cd ..
-   ```
+### Setup
 
-2. **Set up environment variables:**
-   
-   Create `.env` in root:
-   ```env
-   PORT=5000
-   NODE_ENV=development
-   FRONTEND_URL=http://localhost:5173
-   RESEND_API_KEY=re_your_api_key_here
-   RESEND_FROM_EMAIL=onboarding@resend.dev
-   EMAIL_FALLBACK_MODE=true
-   ```
+1. **Clone and install dependencies:**
+\`\`\`bash
+git clone <your-repo-url>
+cd Email
+npm install
+cd frontend && npm install && cd ..
+\`\`\`
 
-3. **Run the app:**
-   ```bash
-   # Terminal 1 - Backend
-   npm start
+2. **Configure environment variables:**
 
-   # Terminal 2 - Frontend
-   cd frontend && npm run dev
-   ```
+Create \`.env\` in root:
+\`\`\`env
+PORT=5000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:5173
+RESEND_API_KEY=re_your_api_key_here
+RESEND_FROM_EMAIL=onboarding@resend.dev
+\`\`\`
 
-4. **Open:** http://localhost:5173
+Get your Resend API key from [resend.com/api-keys](https://resend.com/api-keys)
 
-### Production Deployment
+3. **Run development servers:**
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for deploying to Railway + Vercel.
+Terminal 1 (Backend):
+\`\`\`bash
+npm run dev
+\`\`\`
 
-See [RESEND-SETUP.md](RESEND-SETUP.md) for complete email configuration.
+Terminal 2 (Frontend):
+\`\`\`bash
+cd frontend
+npm run dev
+\`\`\`
 
-## 📧 Email Setup
+Frontend: \`http://localhost:5173\`  
+Backend: \`http://localhost:5000\`
 
-This project uses **Resend** for email delivery (works perfectly with Railway):
+## ��� API Endpoints
 
-1. Create free account at [resend.com](https://resend.com)
-2. Get API key from dashboard
-3. Add to environment variables
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | \`/api/register\` | Register user & send verification email |
+| POST | \`/api/verify-email\` | Verify email with 4-digit code |
+| POST | \`/api/resend-verification\` | Resend verification code |
+| POST | \`/api/login\` | Login with verified account |
 
-**Free tier:** 100 emails/day, 3,000/month - perfect for testing!
+## ��� Environment Variables
 
-## ⚠️ Important Notes
+### Backend (Railway)
+\`\`\`env
+NODE_ENV=production
+FRONTEND_URL=https://your-app.vercel.app
+RESEND_API_KEY=re_your_api_key
+RESEND_FROM_EMAIL=onboarding@resend.dev
+\`\`\`
 
-- **In-memory storage:** User data resets on server restart. Add MongoDB/PostgreSQL for production.
-- **Environment variables:** Never commit `.env` file (already in `.gitignore`)
-- **CORS:** Configure `FRONTEND_URL` to match your domain in production
+### Frontend (Vercel)
+\`\`\`env
+VITE_API_URL=https://your-backend.up.railway.app
+\`\`\`
 
-## 📝 API Endpoints
+## ��� Email Service
 
-- `POST /api/register` - Register new user
-- `POST /api/verify-account` - Verify email with code
-- `POST /api/resend-code` - Request new verification code
-- `POST /api/login` - User login
+Uses [Resend](https://resend.com) for reliable email delivery:
+- ✅ Works with Railway (HTTP API, not SMTP)
+- ✅ Free tier: 3,000 emails/month
+- ✅ Professional templates with gradients
+- ✅ High deliverability
 
-## 🔒 Security Features
+## ⚠️ Production Note
 
-- Passwords hashed with bcrypt
-- CORS configured for specific origins
-- Security headers (XSS, MIME, frame protection)
-- Environment variable protection
-- Code expiration (15 minutes)
+Currently uses **in-memory storage** (Map). Data resets on server restart.  
+For production, integrate MongoDB or PostgreSQL.
 
-## 📄 License
+## ��� License
 
 ISC
 
 ---
 
-**Live Demo:** [https://email-ltct.vercel.app](https://email-ltct.vercel.app)  
-**Documentation:** See [RESEND-SETUP.md](RESEND-SETUP.md) and [DEPLOYMENT.md](DEPLOYMENT.md)
+**Live App:** [https://email-ltct.vercel.app](https://email-ltct.vercel.app)
